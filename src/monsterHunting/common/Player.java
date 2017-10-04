@@ -3,7 +3,7 @@ package monsterHunting.common;
 public class Player {
 	
 	int maxHealth;
-	int startHealth = 30;
+	int startHealth = 40;
 	int currentHealth;
 	int str;
 	int nrPotions;

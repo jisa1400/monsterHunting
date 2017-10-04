@@ -35,7 +35,7 @@ import javax.swing.JLabel;
 public class gameView extends JFrame {
 
 	private JPanel contentPane;
-	private JTextArea textArea;
+	private JTextArea txtAreaMain;
 	private JButton btnFight;
 	private JButton btnPotion;
 	private JButton btnSpawnMonster;
@@ -43,7 +43,11 @@ public class gameView extends JFrame {
 	private Monster monsterOne;
 	private Random rnd;
 	private JScrollPane scrollPane;
-	private JLabel lblMonster;
+	private JLabel lblMonsterHp;
+	private JLabel lblMonsterTyp;
+	private JLabel lblPlayerLevel;
+	private JLabel lblPlayerPotions;
+	private JLabel lblPlayerHealth;
 	/**
 	 * Launch the application.
 	 */
@@ -101,7 +105,7 @@ public class gameView extends JFrame {
 				
 				else
 				{
-					textArea.setText(textArea.getText() + "\n\n" + "There is no monster, you have to find someone to battle!");
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "There is no monster, you have to find someone to battle!");
 				}
 				
 			}
@@ -132,15 +136,19 @@ public class gameView extends JFrame {
 		gbc_btnFight.gridy = 0;
 		contentPane.add(btnFight, gbc_btnFight);
 		
-		lblMonster = new JLabel("New label");
-		GridBagConstraints gbc_lblMonster = new GridBagConstraints();
-		gbc_lblMonster.fill = GridBagConstraints.BOTH;
-		gbc_lblMonster.gridwidth = 4;
-		gbc_lblMonster.gridheight = 4;
-		gbc_lblMonster.insets = new Insets(0, 0, 5, 5);
-		gbc_lblMonster.gridx = 2;
-		gbc_lblMonster.gridy = 0;
-		contentPane.add(lblMonster, gbc_lblMonster);
+		lblPlayerLevel = new JLabel("New label");
+		GridBagConstraints gbc_lblPlayerLevel = new GridBagConstraints();
+		gbc_lblPlayerLevel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlayerLevel.gridx = 2;
+		gbc_lblPlayerLevel.gridy = 0;
+		contentPane.add(lblPlayerLevel, gbc_lblPlayerLevel);
+		
+		lblMonsterTyp = new JLabel("New label");
+		GridBagConstraints gbc_lblMonsterTyp = new GridBagConstraints();
+		gbc_lblMonsterTyp.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMonsterTyp.gridx = 7;
+		gbc_lblMonsterTyp.gridy = 0;
+		contentPane.add(lblMonsterTyp, gbc_lblMonsterTyp);
 		
 		btnPotion = new JButton("Potion");
 		
@@ -151,6 +159,20 @@ public class gameView extends JFrame {
 		gbc_btnPotion.gridy = 1;
 		contentPane.add(btnPotion, gbc_btnPotion);
 		
+		lblPlayerHealth = new JLabel("New label");
+		GridBagConstraints gbc_lblPlayerHealth = new GridBagConstraints();
+		gbc_lblPlayerHealth.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlayerHealth.gridx = 2;
+		gbc_lblPlayerHealth.gridy = 1;
+		contentPane.add(lblPlayerHealth, gbc_lblPlayerHealth);
+		
+		lblMonsterHp = new JLabel("New label");
+		GridBagConstraints gbc_lblMonsterHp = new GridBagConstraints();
+		gbc_lblMonsterHp.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMonsterHp.gridx = 7;
+		gbc_lblMonsterHp.gridy = 1;
+		contentPane.add(lblMonsterHp, gbc_lblMonsterHp);
+		
 		btnSpawnMonster = new JButton("SpawnMonster");
 		
 		GridBagConstraints gbc_btnSpawnMonster = new GridBagConstraints();
@@ -160,34 +182,71 @@ public class gameView extends JFrame {
 		gbc_btnSpawnMonster.gridy = 2;
 		contentPane.add(btnSpawnMonster, gbc_btnSpawnMonster);
 		
+		lblPlayerPotions = new JLabel("New label");
+		GridBagConstraints gbc_lblPlayerPotions = new GridBagConstraints();
+		gbc_lblPlayerPotions.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlayerPotions.gridx = 2;
+		gbc_lblPlayerPotions.gridy = 2;
+		contentPane.add(lblPlayerPotions, gbc_lblPlayerPotions);
+		
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 6;
+		gbc_scrollPane.gridwidth = 7;
 		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 1;
 		gbc_scrollPane.gridy = 4;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
+		txtAreaMain = new JTextArea();
+		scrollPane.setViewportView(txtAreaMain);
 	}
 	
 	public void gameStart() {
 		createPlayer();	
 		createMonster();
 		
-		Image image = new ImageIcon(this.getClass().getResource("/MonsterHunting/src/monsterHunting/resources/zombieFemale.png")).getImage();
-		ImageIcon icon = new ImageIcon(image);
-		
-		
-		lblMonster.setIcon(icon);
+		//Image image = new ImageIcon(this.getClass().getResource("")).getImage();
+		//ImageIcon icon = new ImageIcon(image);
+		//lblMonster.setIcon(icon);
 	}
 	
 	public void createMonster() {
+		rnd = new Random();
+		int chance = rnd.nextInt(10);
 		monsterOne = new Monster();
-		monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
-		monsterOne.setStr(10 + playerOne.getPlayerLevel() * 2);
+		if(chance <= 4)			
+		{
+			monsterOne.setMonsterTyp("Skeleton");
+			monsterOne.setExpGiven(10);
+			monsterOne.setMaxHealth(20);
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setStr(10 + playerOne.getPlayerLevel() * 2);
+			monsterOne.setDodgeChance(1);
+		}
+		else if(chance >= 6)
+		{
+			monsterOne.setMonsterTyp("Bat");
+			monsterOne.setMaxHealth(10);
+			monsterOne.setExpGiven(5);
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setStr(7 + playerOne.getPlayerLevel() * 2);
+			monsterOne.setDodgeChance(5);
+		}
+		else
+		{
+			monsterOne.setMonsterTyp("Ogre");
+			monsterOne.setMaxHealth(35);
+			monsterOne.setExpGiven(30);
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setStr(15 + playerOne.getPlayerLevel() * 2);
+			monsterOne.setDodgeChance(0);
+		}
+		
+		lblMonsterTyp.setText("MonsterType: " + monsterOne.getMonsterTyp());
+		lblMonsterHp.setText("HP: " + Integer.toString(monsterOne.getCurrentHealth()));
+		txtAreaMain.setText("A " + monsterOne.getMonsterTyp() + " appeard! Be carefull hero!");
+		
 	}
 	
 	public void createPlayer() {
@@ -197,6 +256,10 @@ public class gameView extends JFrame {
 		playerOne.setNrPotions(1);
 		playerOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 		playerOne.setMaxHealth(playerOne.getStartHealth());
+		
+		lblPlayerLevel.setText("Player level: " + playerOne.getPlayerLevel());
+		lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
+		lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
 	}
 	
 	public void battleMode() {
@@ -212,22 +275,25 @@ public class gameView extends JFrame {
 			rnd = new Random();
 			pAttack = rnd.nextInt(playerOne.getStr());
 			
-			if(pAttack == 0) 
+			if(pAttack < monsterOne.getDodgeChance()) 
 			{
 				
-				textArea.setText(textArea.getText() + "\n\n" + "You stumbled and missed your attack!");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You stumbled and missed your attack!");
 			}
 			else 
 			{
 				monsterOne.setCurrentHealth(monsterOne.getCurrentHealth() - pAttack);
 				if(monsterOne.getCurrentHealth() <= 0)
 				{
-					textArea.setText(textArea.getText() + "\n\n" + "You attack and did " + pAttack + " damage and killed the monster ");
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You attack and did " + pAttack + " damage and killed the monster and gained " + monsterOne.getExpGiven() + " Exp!");
 					battleEnd();
+					lblMonsterHp.setText("You won! The monster is dead!");
 				}
 				else
 				{
-					textArea.setText(textArea.getText() + "\n\n" + "You attack and did " + pAttack + " damage and the monster have " + monsterOne.getCurrentHealth() + " health left!");
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You attack and did " + pAttack + " damage and the monster have " + monsterOne.getCurrentHealth() + " health left!");
+					
+					lblMonsterHp.setText("HP: " + monsterOne.getCurrentHealth() + "/" + monsterOne.getMaxHealth());
 				}
 				
 			}
@@ -236,7 +302,7 @@ public class gameView extends JFrame {
 				mAttack = rnd.nextInt(monsterOne.getStr());
 				if(mAttack == 0)
 				{
-					textArea.setText(textArea.getText() + "\n" + "The monster tripped on its tail and missed you!");
+					txtAreaMain.setText(txtAreaMain.getText() + "\n" + "The monster tripped on its tail and missed you!");
 				}
 				else
 				{
@@ -244,12 +310,14 @@ public class gameView extends JFrame {
 					
 					if(playerOne.getCurrentHealth() <= 0)
 					{
-						textArea.setText(textArea.getText() + "\n" + "The monster attacked you for " + mAttack + " damage and killed you!");
+						txtAreaMain.setText(txtAreaMain.getText() + "\n" + "The monster attacked you for " + mAttack + " damage and killed you!");
 						battleEnd();
+						lblPlayerHealth.setText("Health: " + "0" + "/" + playerOne.getMaxHealth());
 					}
 					else
 					{
-						textArea.setText(textArea.getText() + "\n" + "The monster attacked you for " + mAttack + " damage and you have " + playerOne.getCurrentHealth() + " health left!");
+						txtAreaMain.setText(txtAreaMain.getText() + "\n" + "The monster attacked you for " + mAttack + " damage and you have " + playerOne.getCurrentHealth() + " health left!");
+						lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
 					}
 				}
 			}
@@ -260,7 +328,7 @@ public class gameView extends JFrame {
 		int loot;
 		if(playerOne.getCurrentHealth() <= 0)
 		{
-			textArea.setText(textArea.getText() + "\n\n" + "///////////////////////// \n" + "///////You died GAME OVER \n" + "/////////////////////////");
+			txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "///////////////////////// \n" + "///////You died GAME OVER \n" + "/////////////////////////");
 		}
 		else
 		{
@@ -268,30 +336,14 @@ public class gameView extends JFrame {
 			if(loot <= 5)
 			{
 				playerOne.setNrPotions(playerOne.getNrPotions() + 1);
-				textArea.setText(textArea.getText() + "\n\n" + "The monster dropped a Health Potion, you now have " + playerOne.getNrPotions() + " Health Potions.");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The monster dropped a Health Potion, you now have " + playerOne.getNrPotions() + " Health Potions.");
+				lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
 			}
 			
-			playerOne.setCurrentExp(playerOne.getCurrentExp() + 10);
+			playerOne.setCurrentExp(playerOne.getCurrentExp() + monsterOne.getExpGiven());
 			levelUp();
 			
 		}
-	}
-	private void monsterImage()
-	{
-		/*BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("zombieFemale.png"));
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
-		Image dimg = img.getScaledInstance(lblMonster.getWidth(), lblMonster.getHeight(),
-		        Image.SCALE_SMOOTH);
-		
-		ImageIcon imageIcon = new ImageIcon(dimg);
-		lblMonster.setIcon(imageIcon);*/
-		
-		
 	}
 	
 	private void levelUp()
@@ -303,47 +355,43 @@ public class gameView extends JFrame {
 			playerOne.setMaxHealth(playerOne.getMaxHealth() + 10);
 			playerOne.setCurrentHealth(playerOne.getMaxHealth());
 			playerOne.setCurrentExp(0);
-			textArea.setText(textArea.getText() + "\n--------------------------------------------\n You leveld up and are now level " + playerOne.getPlayerLevel());
+			txtAreaMain.setText(txtAreaMain.getText() + "\n--------------------------------------------\n You leveld up and are now level " + playerOne.getPlayerLevel());
+			lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
+			lblPlayerLevel.setText("Player Level: " + playerOne.getPlayerLevel());
+			
 		}
 	}
 	
 	private void usePotion() {
-		int minHealing = 8;
-		int maxHealing = 20;
+		int minHealing = (int) Math.ceil(playerOne.getMaxHealth() * 0.3);
+		
+		int maxHealing = (int) Math.ceil((playerOne.getMaxHealth() * 0.8));
+		
 		int restoredHealth;
 		if(playerOne.getNrPotions() <= 0)
 		{
-			textArea.setText(textArea.getText() + "\n\n" + "You have no potions left! Try slay some monsters to find more!");
+			txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You have no potions left! Try slay some monsters to find more!");
 		}
 		else
 		{
 			restoredHealth = rnd.nextInt(maxHealing - minHealing) + minHealing;
 			playerOne.setNrPotions(playerOne.getNrPotions() - 1);
+			lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
 			if((playerOne.getCurrentHealth() + restoredHealth) > playerOne.getMaxHealth())
 			{
-				textArea.setText(textArea.getText() + "\n\n" + "You used a potion to heal for " + (playerOne.getMaxHealth() - playerOne.getCurrentHealth()) + " to full health and have " + playerOne.getNrPotions() + " potions left.");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + (playerOne.getMaxHealth() - playerOne.getCurrentHealth()) + " to full health and have " + playerOne.getNrPotions() + " potions left.");
 				playerOne.setCurrentHealth(playerOne.getMaxHealth());
 			}
 			else
 			{
 				playerOne.setCurrentHealth(playerOne.getCurrentHealth() + restoredHealth);
-				textArea.setText(textArea.getText() + "\n\n" + "You used a potion to heal for " + restoredHealth + " and have healed to " + playerOne.getCurrentHealth() + " and have " + playerOne.getNrPotions() + " potions left!");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + restoredHealth + " and have healed to " + playerOne.getCurrentHealth() + " and have " + playerOne.getNrPotions() + " potions left!");
 			}
-			
+			lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
 			
 			
 		}
 		
 	}
 	
-	private Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
-
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
-
-	    return resizedImg;
-	}
 }
