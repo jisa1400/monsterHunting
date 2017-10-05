@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import monsterHunting.common.Monster;
 import monsterHunting.common.Player;
+import monsterHunting.common.Spells;
 
 import javax.swing.JTextPane;
 import javax.imageio.ImageIO;
@@ -19,6 +20,10 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
@@ -31,6 +36,7 @@ import java.awt.RenderingHints;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JComboBox;
 
 public class gameView extends JFrame {
 
@@ -48,6 +54,11 @@ public class gameView extends JFrame {
 	private JLabel lblPlayerLevel;
 	private JLabel lblPlayerPotions;
 	private JLabel lblPlayerHealth;
+	private JComboBox<String> cboxSpells;
+	private JLabel lblPlayerMana;
+	private JButton btnCastSpell;
+	private JLabel lblPlayerImage;
+	private JLabel lblMonsterImage;
 	/**
 	 * Launch the application.
 	 */
@@ -101,8 +112,6 @@ public class gameView extends JFrame {
 					battleMode();
 				}
 				
-				
-				
 				else
 				{
 					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "There is no monster, you have to find someone to battle!");
@@ -110,21 +119,28 @@ public class gameView extends JFrame {
 				
 			}
 		});
+		
+		btnCastSpell.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				castingSpell();
+			}
+		});
+
 	}
 ///////////////////////////////////////////////////////////////////////////
 ////////////This contains all the code for creating and initializing components	
 //////////////////////////////////////////////////////////////////////////
 	private void initComponets() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 640, 480);
+		setBounds(100, 100, 768, 483);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		btnFight = new JButton("Fight");
@@ -182,30 +198,68 @@ public class gameView extends JFrame {
 		gbc_btnSpawnMonster.gridy = 2;
 		contentPane.add(btnSpawnMonster, gbc_btnSpawnMonster);
 		
+		lblPlayerMana = new JLabel("New label");
+		GridBagConstraints gbc_lblPlayerMana = new GridBagConstraints();
+		gbc_lblPlayerMana.anchor = GridBagConstraints.WEST;
+		gbc_lblPlayerMana.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlayerMana.gridx = 2;
+		gbc_lblPlayerMana.gridy = 2;
+		contentPane.add(lblPlayerMana, gbc_lblPlayerMana);
+		
+		cboxSpells = new JComboBox<String>();
+		GridBagConstraints gbc_cboxSpells = new GridBagConstraints();
+		gbc_cboxSpells.insets = new Insets(0, 0, 5, 5);
+		gbc_cboxSpells.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cboxSpells.gridx = 0;
+		gbc_cboxSpells.gridy = 3;
+		contentPane.add(cboxSpells, gbc_cboxSpells);
+		
 		lblPlayerPotions = new JLabel("New label");
 		GridBagConstraints gbc_lblPlayerPotions = new GridBagConstraints();
 		gbc_lblPlayerPotions.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPlayerPotions.gridx = 2;
-		gbc_lblPlayerPotions.gridy = 2;
+		gbc_lblPlayerPotions.gridy = 3;
 		contentPane.add(lblPlayerPotions, gbc_lblPlayerPotions);
+		
+		btnCastSpell = new JButton("Cast Spell");
+		
+				GridBagConstraints gbc_btnCastSpell = new GridBagConstraints();
+				gbc_btnCastSpell.insets = new Insets(0, 0, 5, 5);
+				gbc_btnCastSpell.gridx = 0;
+				gbc_btnCastSpell.gridy = 4;
+				contentPane.add(btnCastSpell, gbc_btnCastSpell);
+		
+		lblPlayerImage = new JLabel("");
+		GridBagConstraints gbc_lblPlayerImage = new GridBagConstraints();
+		gbc_lblPlayerImage.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPlayerImage.gridx = 0;
+		gbc_lblPlayerImage.gridy = 5;
+		contentPane.add(lblPlayerImage, gbc_lblPlayerImage);
 		
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 7;
+		gbc_scrollPane.gridwidth = 5;
 		gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 1;
-		gbc_scrollPane.gridy = 4;
+		gbc_scrollPane.gridx = 2;
+		gbc_scrollPane.gridy = 5;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		txtAreaMain = new JTextArea();
 		scrollPane.setViewportView(txtAreaMain);
+		
+		lblMonsterImage = new JLabel("");
+		GridBagConstraints gbc_lblMonsterImage = new GridBagConstraints();
+		gbc_lblMonsterImage.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMonsterImage.gridx = 7;
+		gbc_lblMonsterImage.gridy = 5;
+		contentPane.add(lblMonsterImage, gbc_lblMonsterImage);
 	}
 	
 	public void gameStart() {
 		createPlayer();	
 		createMonster();
-		
+		generateSpellList();
 		//Image image = new ImageIcon(this.getClass().getResource("")).getImage();
 		//ImageIcon icon = new ImageIcon(image);
 		//lblMonster.setIcon(icon);
@@ -214,38 +268,43 @@ public class gameView extends JFrame {
 	public void createMonster() {
 		rnd = new Random();
 		int chance = rnd.nextInt(10);
+		String imagePath = "";
 		monsterOne = new Monster();
 		if(chance <= 4)			
 		{
-			monsterOne.setMonsterTyp("Skeleton");
+			monsterOne.setMonsterTyp("Zombie");
 			monsterOne.setExpGiven(10);
-			monsterOne.setMaxHealth(20);
-			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setMaxHealth(20 + 10 * playerOne.getPlayerLevel());
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(1);
+			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\zombieFemale.png";
 		}
 		else if(chance >= 6)
 		{
 			monsterOne.setMonsterTyp("Bat");
-			monsterOne.setMaxHealth(10);
+			monsterOne.setMaxHealth(10 + 10 * playerOne.getPlayerLevel());
 			monsterOne.setExpGiven(5);
-			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(7 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(5);
+			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\bat.png";
 		}
 		else
 		{
 			monsterOne.setMonsterTyp("Ogre");
-			monsterOne.setMaxHealth(35);
+			monsterOne.setMaxHealth(40 + 10 * playerOne.getPlayerLevel());
 			monsterOne.setExpGiven(30);
-			monsterOne.setCurrentHealth(monsterOne.getMaxHealth() + 10 * playerOne.getPlayerLevel());
+			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(15 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(0);
+			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\ogre.jpg";
 		}
 		
 		lblMonsterTyp.setText("MonsterType: " + monsterOne.getMonsterTyp());
 		lblMonsterHp.setText("HP: " + Integer.toString(monsterOne.getCurrentHealth()));
 		txtAreaMain.setText("A " + monsterOne.getMonsterTyp() + " appeard! Be carefull hero!");
+		monsterImage(imagePath);
 		
 	}
 	
@@ -256,10 +315,29 @@ public class gameView extends JFrame {
 		playerOne.setNrPotions(1);
 		playerOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 		playerOne.setMaxHealth(playerOne.getStartHealth());
+		playerOne.setCurrentMana(playerOne.getMaxMana());
+		
+		Spells fireball = new Spells();
+		fireball.setName("fireball");
+		fireball.setMaxDamage(25);
+		fireball.setMinDamage(8);
+		fireball.setManaCost(7);
+		Spells thunder = new Spells();
+		thunder.setName("thunder");
+		thunder.setMaxDamage(18);
+		thunder.setMinDamage(12);
+		thunder.setManaCost(4);
+		
+		HashMap<String, Spells> spellMap = new HashMap<String, Spells>();
+		spellMap.put(fireball.getName(), fireball);
+		spellMap.put(thunder.getName(), thunder);
+		playerOne.setSpellMap(spellMap);
 		
 		lblPlayerLevel.setText("Player level: " + playerOne.getPlayerLevel());
 		lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
 		lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
+		lblPlayerMana.setText("Mana: " + playerOne.getCurrentMana() + "/" + playerOne.getMaxMana());
+		playerImage();
 	}
 	
 	public void battleMode() {
@@ -285,7 +363,7 @@ public class gameView extends JFrame {
 				monsterOne.setCurrentHealth(monsterOne.getCurrentHealth() - pAttack);
 				if(monsterOne.getCurrentHealth() <= 0)
 				{
-					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You attack and did " + pAttack + " damage and killed the monster and gained " + monsterOne.getExpGiven() + " Exp!");
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You attack and did " + pAttack + " damage and killed the monster and gained ");
 					battleEnd();
 					lblMonsterHp.setText("You won! The monster is dead!");
 				}
@@ -332,6 +410,7 @@ public class gameView extends JFrame {
 		}
 		else
 		{
+			txtAreaMain.setText(txtAreaMain.getText() +  monsterOne.getExpGiven() + " Exp!");
 			loot = rnd.nextInt(20);
 			if(loot <= 5)
 			{
@@ -392,6 +471,82 @@ public class gameView extends JFrame {
 			
 		}
 		
+	}
+	
+	private void generateSpellList()
+	{
+		for(Map.Entry<String, Spells> select : playerOne.getSpellMap().entrySet())
+		{
+			
+			cboxSpells.addItem(select.getValue().toString());
+		}
+	}
+	
+	private void castingSpell()
+	{
+		
+		if(monsterOne.getCurrentHealth() <= 0)
+		{
+			battleEnd();
+		}
+		else
+		{			
+			if(playerOne.getCurrentMana() >= playerOne.getSpellMap().get(cboxSpells.getSelectedItem().toString()).getManaCost())
+			{
+				String spellName = playerOne.getSpellMap().get(cboxSpells.getSelectedItem().toString()).getName().toUpperCase();
+				String resistedSpell = " ate your ";
+				int resist = rnd.nextInt(10);
+				int maxDamage = playerOne.getSpellMap().get(cboxSpells.getSelectedItem().toString()).getMaxDamage();
+				int minDamage = playerOne.getSpellMap().get(cboxSpells.getSelectedItem().toString()).getMinDamage();		
+				int damage = rnd.nextInt(maxDamage - minDamage) + minDamage;
+				playerOne.setCurrentMana(playerOne.getCurrentMana() - playerOne.getSpellMap().get(cboxSpells.getSelectedItem().toString()).getManaCost());
+				
+				if(resist <= 1)
+				{
+					damage = (int)Math.ceil(damage * 0.2);
+					resistedSpell = " resisted your ";
+				}
+				
+				monsterOne.setCurrentHealth(monsterOne.getCurrentHealth() - damage);
+				if(monsterOne.getCurrentHealth() <= 0)
+				{
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The " + monsterOne.getMonsterTyp() + resistedSpell + spellName + " and took " + damage + " damage and died, you gained ");
+					lblMonsterHp.setText("You killed the monster and won!");
+					battleEnd();
+				}
+				else
+				{
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The " + monsterOne.getMonsterTyp() + resistedSpell + spellName + " and took " + damage + " damage!");
+					lblMonsterHp.setText("HP: " + monsterOne.getCurrentHealth() + "/" + monsterOne.getMaxHealth());
+				}
+				
+				lblPlayerMana.setText("Mana: " + playerOne.getCurrentMana() + "/" + playerOne.getMaxMana());
+			}
+			else
+			{
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You don't have enough mana Hero!");
+			}
+		}		
+	}
+	
+	private void monsterImage(String path)
+	{
+		ImageIcon icon = new ImageIcon(path);
+		
+		Image image = icon.getImage(); // transform it 
+		Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		ImageIcon p = new ImageIcon(newimg);
+		lblMonsterImage.setIcon(p);
+	}
+	
+	private void playerImage()
+	{
+		ImageIcon icon = new ImageIcon("C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\knight.png");
+		
+		Image image = icon.getImage(); // transform it 
+		Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		ImageIcon p = new ImageIcon(newimg);
+		lblPlayerImage.setIcon(p);
 	}
 	
 }

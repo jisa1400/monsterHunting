@@ -1,5 +1,8 @@
 package monsterHunting.common;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Player {
 	
 	int maxHealth;
@@ -10,7 +13,29 @@ public class Player {
 	int playerLevel = 0;
 	int currentExp;
 	int expToLevel = 30;
+	int maxMana = 20;
+	int currentMana;
+	HashMap<String, Spells> spellMap;
 	
+	
+	public int getMaxMana() {
+		return maxMana;
+	}
+	public void setMaxMana(int maxMana) {
+		this.maxMana = maxMana;
+	}
+	public int getCurrentMana() {
+		return currentMana;
+	}
+	public void setCurrentMana(int currentMana) {
+		this.currentMana = currentMana;
+	}
+	public HashMap<String, Spells> getSpellMap() {
+		return spellMap;
+	}
+	public void setSpellMap(HashMap<String, Spells> spellMap) {
+		this.spellMap = spellMap;
+	}
 	public int getCurrentExp() {
 		return currentExp;
 	}
@@ -20,6 +45,7 @@ public class Player {
 	public int getExpToLevel() {
 		return expToLevel;
 	}
+	
 	public void setExpToLevel(int expToLevel) {
 		this.expToLevel = expToLevel;
 	}
