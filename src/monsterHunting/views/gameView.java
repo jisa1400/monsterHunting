@@ -542,7 +542,6 @@ public class gameView extends JFrame {
 	private void playerImage()
 	{
 		ImageIcon icon = new ImageIcon("C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\knight.png");
-		
 		Image image = icon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		ImageIcon p = new ImageIcon(newimg);
