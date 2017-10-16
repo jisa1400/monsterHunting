@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 
 import monsterHunting.common.Monster;
 import monsterHunting.common.Player;
+import monsterHunting.common.Potion;
 import monsterHunting.common.Spells;
 
 import javax.swing.JTextPane;
@@ -41,7 +42,7 @@ import javax.swing.JComboBox;
 public class gameView extends JFrame {
 
 	private JPanel contentPane;
-	private JTextArea txtAreaMain;
+	public JTextArea txtAreaMain;
 	private JButton btnFight;
 	private JButton btnPotion;
 	private JButton btnSpawnMonster;
@@ -59,6 +60,7 @@ public class gameView extends JFrame {
 	private JButton btnCastSpell;
 	private JLabel lblPlayerImage;
 	private JLabel lblMonsterImage;
+	private Potion usePotion = new Potion();
 	/**
 	 * Launch the application.
 	 */
@@ -94,7 +96,12 @@ public class gameView extends JFrame {
 	private void createEvents() {
 		btnPotion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				usePotion();
+				
+				playerOne = usePotion.useHealingPotion(playerOne);
+				txtAreaMain.setText(txtAreaMain.getText() + playerOne.getTxtArea());
+				lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
+				lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
+				
 			}
 		});
 		
@@ -312,7 +319,7 @@ public class gameView extends JFrame {
 		playerOne = new Player();
 		playerOne.setPlayerLevel(0);
 		playerOne.setCurrentHealth(playerOne.getStartHealth());
-		playerOne.setNrPotions(1);
+		playerOne.setHealingPotions(1);
 		playerOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 		playerOne.setMaxHealth(playerOne.getStartHealth());
 		playerOne.setCurrentMana(playerOne.getMaxMana());
@@ -335,7 +342,7 @@ public class gameView extends JFrame {
 		
 		lblPlayerLevel.setText("Player level: " + playerOne.getPlayerLevel());
 		lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
-		lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
+		lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
 		lblPlayerMana.setText("Mana: " + playerOne.getCurrentMana() + "/" + playerOne.getMaxMana());
 		playerImage();
 	}
@@ -414,9 +421,9 @@ public class gameView extends JFrame {
 			loot = rnd.nextInt(20);
 			if(loot <= 5)
 			{
-				playerOne.setNrPotions(playerOne.getNrPotions() + 1);
-				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The monster dropped a Health Potion, you now have " + playerOne.getNrPotions() + " Health Potions.");
-				lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
+				playerOne.setHealingPotions(playerOne.getHealingPotions() + 1);
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The monster dropped a Health Potion, you now have " + playerOne.getHealingPotions() + " Health Potions.");
+				lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
 			}
 			
 			playerOne.setCurrentExp(playerOne.getCurrentExp() + monsterOne.getExpGiven());
@@ -446,25 +453,26 @@ public class gameView extends JFrame {
 		
 		int maxHealing = (int) Math.ceil((playerOne.getMaxHealth() * 0.8));
 		
-		int restoredHealth;
-		if(playerOne.getNrPotions() <= 0)
+		int 
+		restoredHealth;
+		if(playerOne.getHealingPotions() <= 0)
 		{
 			txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You have no potions left! Try slay some monsters to find more!");
 		}
 		else
 		{
 			restoredHealth = rnd.nextInt(maxHealing - minHealing) + minHealing;
-			playerOne.setNrPotions(playerOne.getNrPotions() - 1);
-			lblPlayerPotions.setText("Potions: " + playerOne.getNrPotions());
+			playerOne.setHealingPotions(playerOne.getHealingPotions() - 1);
+			lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
 			if((playerOne.getCurrentHealth() + restoredHealth) > playerOne.getMaxHealth())
 			{
-				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + (playerOne.getMaxHealth() - playerOne.getCurrentHealth()) + " to full health and have " + playerOne.getNrPotions() + " potions left.");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + (playerOne.getMaxHealth() - playerOne.getCurrentHealth()) + " to full health and have " + playerOne.getHealingPotions() + " potions left.");
 				playerOne.setCurrentHealth(playerOne.getMaxHealth());
 			}
 			else
 			{
 				playerOne.setCurrentHealth(playerOne.getCurrentHealth() + restoredHealth);
-				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + restoredHealth + " and have healed to " + playerOne.getCurrentHealth() + " and have " + playerOne.getNrPotions() + " potions left!");
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You used a potion to heal for " + restoredHealth + " and have healed to " + playerOne.getCurrentHealth() + " and have " + playerOne.getHealingPotions() + " potions left!");
 			}
 			lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
 			
@@ -505,6 +513,7 @@ public class gameView extends JFrame {
 				{
 					damage = (int)Math.ceil(damage * 0.2);
 					resistedSpell = " resisted your ";
+					
 				}
 				
 				monsterOne.setCurrentHealth(monsterOne.getCurrentHealth() - damage);

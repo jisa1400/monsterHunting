@@ -4,18 +4,27 @@ import java.util.HashMap;
 
 public class Player {
 	
+	String txtArea;
 	int maxHealth;
 	int startHealth = 40;
 	int currentHealth;
 	int str;
-	int nrPotions;
+	int healingPotions;
 	int playerLevel = 0;
 	int currentExp;
 	int expToLevel = 30;
 	int maxMana = 20;
 	int currentMana;
+	int manaPotions;
 	HashMap<String, Spells> spellMap;
 	
+	
+	public String getTxtArea() {
+		return txtArea;
+	}
+	public void setTxtArea(String txtArea) {
+		this.txtArea = txtArea;
+	}
 	
 	public int getMaxMana() {
 		return maxMana;
@@ -72,11 +81,11 @@ public class Player {
 	public void setStr(int str) {
 		this.str = str;
 	}
-	public int getNrPotions() {
-		return nrPotions;
+	public int getHealingPotions() {
+		return healingPotions;
 	}
-	public void setNrPotions(int nrPotions) {
-		this.nrPotions = nrPotions;
+	public void setHealingPotions(int nrPotions) {
+		this.healingPotions = nrPotions;
 	}
 	public int getStartHealth() {
 		return startHealth;
