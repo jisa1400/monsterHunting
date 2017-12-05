@@ -277,7 +277,7 @@ public class gameView extends JFrame {
 		int chance = rnd.nextInt(10);
 		String imagePath = "";
 		monsterOne = new Monster();
-		if(chance <= 4)			
+		if(chance <= 3)			
 		{
 			monsterOne.setMonsterTyp("Zombie");
 			monsterOne.setExpGiven(10);
@@ -285,9 +285,9 @@ public class gameView extends JFrame {
 			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(1);
-			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\zombieFemale.png";
+			imagePath = "C:\\Users\\jsaari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\zombieFemale.png";
 		}
-		else if(chance >= 6)
+		else if(chance >= 7)
 		{
 			monsterOne.setMonsterTyp("Bat");
 			monsterOne.setMaxHealth(10 + 10 * playerOne.getPlayerLevel());
@@ -295,7 +295,7 @@ public class gameView extends JFrame {
 			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(7 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(5);
-			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\bat.png";
+			imagePath = "C:\\Users\\jsaari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\bat.png";
 		}
 		else
 		{
@@ -305,7 +305,7 @@ public class gameView extends JFrame {
 			monsterOne.setCurrentHealth(monsterOne.getMaxHealth());
 			monsterOne.setStr(15 + playerOne.getPlayerLevel() * 2);
 			monsterOne.setDodgeChance(0);
-			imagePath = "C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\ogre.jpg";
+			imagePath = "C:\\Users\\jsaari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\ogre.jpg";
 		}
 		
 		lblMonsterTyp.setText("MonsterType: " + monsterOne.getMonsterTyp());
@@ -411,7 +411,7 @@ public class gameView extends JFrame {
 
 	private void battleEnd() {
 		int loot;
-		if(playerOne.getCurrentHealth() <= 0)
+ 		if(playerOne.getCurrentHealth() <= 0)
 		{
 			txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "///////////////////////// \n" + "///////You died GAME OVER \n" + "/////////////////////////");
 		}
@@ -550,7 +550,8 @@ public class gameView extends JFrame {
 	
 	private void playerImage()
 	{
-		ImageIcon icon = new ImageIcon("C:\\Users\\IBM Jimmy Saari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\knight.png");
+		//C:\Users\jsaari\eclipse-workspace\MonsterHunting\src\monsterHunting\resources
+		ImageIcon icon = new ImageIcon("C:\\Users\\jsaari\\eclipse-workspace\\MonsterHunting\\src\\monsterHunting\\resources\\knight.png");
 		Image image = icon.getImage(); // transform it 
 		Image newimg = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		ImageIcon p = new ImageIcon(newimg);
