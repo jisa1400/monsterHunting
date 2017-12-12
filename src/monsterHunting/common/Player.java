@@ -19,6 +19,12 @@ public class Player {
 	HashMap<String, Spells> spellMap;
 	
 	
+	public int getManaPotions() {
+		return manaPotions;
+	}
+	public void setManaPotions(int manaPotions) {
+		this.manaPotions = manaPotions;
+	}
 	public String getTxtArea() {
 		return txtArea;
 	}

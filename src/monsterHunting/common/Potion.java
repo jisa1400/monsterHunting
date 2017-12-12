@@ -37,4 +37,29 @@ public class Potion {
 		}
 		return currentPlayer;
 	}
+	
+	public Player useManaPotion (Player currentPlayer) {
+		
+		if(currentPlayer.getManaPotions() <= 0) {
+			currentPlayer.setTxtArea("\n\n"+"You have no more ManaPotions! Slay more monsters hero!");
+		}
+		else {
+			Random rnd = new Random();
+			int maxRestored = (int) Math.ceil(currentPlayer.getMaxMana() * 0.8);
+			int minRestored = (int) Math.ceil(currentPlayer.getMaxMana() * 0.3);
+			int restoredAmount = rnd.nextInt(maxRestored - minRestored) + minRestored;
+			
+			currentPlayer.setManaPotions(currentPlayer.getManaPotions() - 1);
+			if(currentPlayer.getCurrentMana() + restoredAmount > currentPlayer.getMaxMana()) {
+				currentPlayer.setCurrentMana(currentPlayer.getMaxMana());
+				currentPlayer.setTxtArea("\n\n" + "You used a Manapotion to restore " + (currentPlayer.getMaxMana() - currentPlayer.getCurrentMana()) + " to max mana and have " + currentPlayer.getManaPotions() + " Manapotions left.");
+			}
+			else {
+				currentPlayer.setCurrentMana(currentPlayer.getCurrentMana() + restoredAmount);
+				currentPlayer.setTxtArea("\n\n" + "You used a mana potion to restore " + restoredAmount + "!");
+			}
+		}
+		
+		return currentPlayer;
+	}
 }
