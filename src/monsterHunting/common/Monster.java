@@ -4,6 +4,28 @@ public class Monster {
 	int maxHealth = 10;
 	int currentHealth;
 	int str;
+	int expGiven;
+	int dodgeChance;
+	public int getDodgeChance() {
+		return dodgeChance;
+	}
+	public void setDodgeChance(int dodgeChance) {
+		this.dodgeChance = dodgeChance;
+	}
+	public int getExpGiven() {
+		return expGiven;
+	}
+	public void setExpGiven(int expGiven) {
+		this.expGiven = expGiven;
+	}
+	String monsterTyp;
+	
+	public String getMonsterTyp() {
+		return monsterTyp;
+	}
+	public void setMonsterTyp(String monsterTyp) {
+		this.monsterTyp = monsterTyp;
+	}
 	public int getMaxHealth() {
 		return maxHealth;
 	}
