@@ -15,6 +15,7 @@ import monsterHunting.common.Spells;
 
 import javax.swing.JTextPane;
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -37,6 +38,7 @@ import java.awt.RenderingHints;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 
 public class gameView extends JFrame {
@@ -129,7 +131,13 @@ public class gameView extends JFrame {
 		
 		btnCastSpell.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				castingSpell();
+				if(monsterOne.getCurrentHealth() >= 1) {
+					castingSpell();
+				}
+				else {
+					txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "There is no monster, you have to find someone to battle!");
+				}
+				
 			}
 		});
 
@@ -320,6 +328,7 @@ public class gameView extends JFrame {
 		playerOne.setPlayerLevel(0);
 		playerOne.setCurrentHealth(playerOne.getStartHealth());
 		playerOne.setHealingPotions(1);
+		playerOne.setManaPotions(1);
 		playerOne.setStr(10 + playerOne.getPlayerLevel() * 2);
 		playerOne.setMaxHealth(playerOne.getStartHealth());
 		playerOne.setCurrentMana(playerOne.getMaxMana());
@@ -425,7 +434,10 @@ public class gameView extends JFrame {
 				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The monster dropped a Health Potion, you now have " + playerOne.getHealingPotions() + " Health Potions.");
 				lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
 			}
-			
+			else if(loot >= 6 && loot <= 10) {
+				playerOne.setManaPotions(playerOne.getManaPotions() + 1);
+				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "The monster dropped a Mana Potion, you now have " + playerOne.getManaPotions() + " Mana potions.");
+			}
 			playerOne.setCurrentExp(playerOne.getCurrentExp() + monsterOne.getExpGiven());
 			levelUp();
 			
@@ -533,7 +545,33 @@ public class gameView extends JFrame {
 			}
 			else
 			{
-				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You don't have enough mana Hero!");
+				final JFrame parent = new JFrame();
+				final JPanel pane = new JPanel();
+				pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+				parent.add(pane);
+		        JButton buttonUseMana = new JButton();
+		        JLabel xManapotions = new JLabel();
+		        
+		        xManapotions.setText("Nr of Manaotions: " + playerOne.getManaPotions());
+		        buttonUseMana.setText("Use Mana Potion Bro!");
+		        pane.add(xManapotions);
+		        pane.add(buttonUseMana);
+		        parent.pack();
+		        parent.setLocationRelativeTo(null);
+		        parent.setVisible(true);
+		        
+		        buttonUseMana.addActionListener(new java.awt.event.ActionListener() {
+		            @Override
+		            public void actionPerformed(java.awt.event.ActionEvent evt) {
+		            	playerOne = usePotion.useManaPotion(playerOne);
+						txtAreaMain.setText(txtAreaMain.getText() + playerOne.getTxtArea());
+						lblPlayerMana.setText("Mana: " + playerOne.getCurrentMana() + "/" + playerOne.getMaxMana());
+//						lblPlayerHealth.setText("Health: " + playerOne.getCurrentHealth() + "/" + playerOne.getMaxHealth());
+//						lblPlayerPotions.setText("Potions: " + playerOne.getHealingPotions());
+						parent.setVisible(false);
+		            }
+		        });
+//				txtAreaMain.setText(txtAreaMain.getText() + "\n\n" + "You don't have enough mana Hero!");
 			}
 		}		
 	}
